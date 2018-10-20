@@ -1,0 +1,8 @@
+PROCEDURE:
+  Infrastructure:
+    ☐ Create new application folder.
+    ☐ Write templates:
+      ☐ .gitignore
+      ☐ package.json
+      ☐ webpack.config.js
+    ☐ Install dependencies.
