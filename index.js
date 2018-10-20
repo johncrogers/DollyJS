@@ -1,7 +1,16 @@
-const { appConfig } = require("./procedures");
-let projectName = process.argv[2];
+const { resolveConfigurationPath, infrastructure } = require("./procedures");
 
-console.log(`GENERATING APPLICATION: ${projectName}`);
-appConfig.generateAppDirectory(projectName);
-appConfig.writeConfigFiles(projectName);
-appConfig.installDependencies(projectName);
+let openingMessage =
+  "======================================\n" +
+  "  DollyJS: Thanks for using DollyJS!\n" +
+  "    Repository: github.com/repo\n" +
+  "    Documentation: github.com/docs\n" +
+  "    Getting Started: README\n" +
+  "======================================\n";
+console.log(openingMessage);
+
+const { applicationName } = require(resolveConfigurationPath());
+infrastructure.generateAppDirectory(applicationName);
+infrastructure.writeConfigFiles(applicationName);
+infrastructure.installDependencies(applicationName);
+infrastructure.generateDirectories(applicationName);
