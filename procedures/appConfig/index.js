@@ -1,29 +1,29 @@
-module.exports.generateAppDirectory = projectName => {
+module.exports.generateAppDirectory = applicationName => {
   const { existsSync, mkdirSync } = require("fs");
-  let projectFolder = `./Lab/${projectName}/`;
+  let applicationFolder = `./Lab/${applicationName}/`;
 
-  if (!existsSync(projectFolder)) {
+  if (!existsSync(applicationFolder)) {
     console.log(`  -> Generating application directory.`);
-    mkdirSync(projectFolder);
+    mkdirSync(applicationFolder);
   }
 };
-module.exports.writeConfigFiles = projectName => {
+module.exports.writeConfigFiles = applicationName => {
   console.log(`  -> Writing application configuration files.`);
   const { writeFileSync } = require("fs");
   const templates = require("./templates");
-  let projectFolder = `./Lab/${projectName}/`;
+  let applicationFolder = `./Lab/${applicationName}/`;
 
   for (let file in templates) {
     let contents = templates[file].contents;
     let fileName = templates[file].fileName;
     console.log(`    > Writing ${fileName}`);
-    writeFileSync(projectFolder + fileName, contents);
+    writeFileSync(applicationFolder + fileName, contents);
   }
 };
-module.exports.installDependencies = projectName => {
+module.exports.installDependencies = applicationName => {
   console.log(`  -> Installing application dependencies.`);
   const { execSync } = require("child_process");
-  let projectFolder = `./Lab/${projectName}/`;
+  let applicationFolder = `./Lab/${applicationName}/`;
   let dependencies = [
     "axios",
     "body-parser",
@@ -46,6 +46,6 @@ module.exports.installDependencies = projectName => {
 
   for (let dependency of dependencies) {
     console.log(`    > Now installing ${dependency}`);
-    execSync(`npm install ${dependency}`, { cwd: projectFolder });
+    execSync(`npm install ${dependency}`, { cwd: applicationFolder });
   }
 };
