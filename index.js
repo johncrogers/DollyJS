@@ -11,7 +11,7 @@ let projectFolder = `${__dirname}/Lab/${projectName}/`;
 console.log(`CREATING NEW PROJECT: ${projectName}`);
 if (!existsSync(projectFolder)) {
   console.log(`  -> Generating project folder.`);
-  mkdirSync(`./${projectName}`);
+  mkdirSync(projectFolder);
 }
 
 // Write base files.
@@ -26,6 +26,6 @@ for (let file in files) {
 console.log(`  Procedure: Install Dependencies`);
 for (let dependency of dependencies) {
   console.log(`    -> Installing ${dependency}`);
-  execSync(`npm install ${dependency}`);
+  execSync(`npm install ${dependency}`, { cwd: projectFolder });
 }
 // Write utility.
