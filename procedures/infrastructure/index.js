@@ -36,8 +36,7 @@ module.exports.generateDirectories = applicationName => {
   console.log(`    > Generating directory structure.`);
   const { mkdirSync, existsSync } = require("fs");
   const { directoryStructure } = require("./config.js");
-  // const pathToApplication = `./Lab/Applications/${applicationName}`;
-  const pathToApplication = `./procedures/infrastructure/templates/stack`;
+  const pathToApplication = `./Lab/Applications/${applicationName}`;
 
   function traverseAndBuildFolderStructure(pathToFolder, structure) {
     if (structure.length) {
@@ -46,9 +45,7 @@ module.exports.generateDirectories = applicationName => {
         let folderExists = existsSync(targetFolder);
         if (!folderExists) {
           console.log(
-            `        - Creating ${
-              targetFolder.split("./Lab/Applications/Test")[1]
-            }`
+            `        - Creating ${targetFolder.split(pathToApplication)[1]}`
           );
           mkdirSync(targetFolder);
         }
@@ -68,24 +65,45 @@ module.exports.generateStack = applicationName => {
   const { readFileSync, writeFileSync } = require("fs");
   const { directoryStructure } = require("./config.js");
   const pathToApplication = `./Lab/Applications/${applicationName}`;
+  const pathToTemplates = `./procedures/infrastructure/templates/stack`;
 
-  function traverseAndGenerateStackFiles(pathToFolder, structure) {
+  function traverseAndGenerateStackFiles(
+    pathToFolder,
+    pathToTemplate,
+    structure
+  ) {
     if (structure.length) {
       for (let folder of structure) {
         let targetFolder = `${pathToFolder}/${folder.name}`;
-        let contents = "// new file";
+        let templateFolder = `${pathToTemplate}/${folder.name}`;
 
-        writeFileSync(`${targetFolder}/index.js`, contents);
+        if (folder.file) {
+          let targetTemplate = `${templateFolder}/${folder.file}`;
+          let contents = readFileSync(`${targetTemplate}`, "utf8");
+          console.log(
+            `        - Creating ${targetTemplate.split(pathToTemplates)[1]}`
+          );
+          writeFileSync(`${targetFolder}/${folder.file}`, contents);
+        }
 
         if (folder.subfolders.length) {
           let currentFolder = targetFolder;
-          traverseAndGenerateStackFiles(currentFolder, folder.subfolders);
+          let currentTemplateFolder = templateFolder;
+          traverseAndGenerateStackFiles(
+            currentFolder,
+            currentTemplateFolder,
+            folder.subfolders
+          );
         }
       }
     }
   }
 
-  traverseAndGenerateStackFiles(pathToApplication, directoryStructure);
+  traverseAndGenerateStackFiles(
+    pathToApplication,
+    pathToTemplates,
+    directoryStructure
+  );
 
   console.log(`      -> Infrastructure generated!`);
 };
