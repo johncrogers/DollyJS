@@ -10,48 +10,82 @@ module.exports.generateAppDirectory = applicationName => {
 module.exports.writeConfigFiles = applicationName => {
   console.log(`    > Writing application configuration files.`);
   const { writeFileSync } = require("fs");
-  const templates = require("./templates");
+  const { configuration } = require("./templates");
   let applicationFolder = `./Lab/Applications/${applicationName}/`;
 
-  for (let file in templates) {
-    let contents = templates[file].contents;
-    let fileName = templates[file].fileName;
+  for (let file in configuration) {
+    let contents = configuration[file].contents;
+    let fileName = configuration[file].fileName;
     console.log(`        - Writing ${fileName}`);
     writeFileSync(applicationFolder + fileName, contents);
   }
   console.log(`      -> Files written!`);
 };
 module.exports.installDependencies = applicationName => {
-  console.log(`    -> Installing application dependencies.`);
+  console.log(`    > Installing application dependencies.`);
   const { execSync } = require("child_process");
+  const { dependencies } = require("./config.js");
   let applicationFolder = `./Lab/Applications/${applicationName}/`;
-  let dependencies = [
-    "axios",
-    "body-parser",
-    "cors",
-    "express",
-    "jquery",
-    "knex",
-    "pg",
-    "react",
-    "react-dom",
-    "semantic-ui-react",
-    "babel-core",
-    "babel-loader",
-    "babel-preset-es2015",
-    "babel-preset-react",
-    "nodemon",
-    "webpack",
-    "helmet"
-  ];
 
   for (let dependency of dependencies) {
-    console.log(`    > Now installing ${dependency}...`);
+    console.log(`      > Now installing ${dependency}...`);
     execSync(`npm install ${dependency}`, { cwd: applicationFolder });
   }
 };
 module.exports.generateDirectories = applicationName => {
-  const { mkdirSync } = require("fs");
-  let pathToApplication = `./Lab/Applications/${applicationName}`;
-  let directoryStructure = require("");
+  console.log(`    > Generating directory structure.`);
+  const { mkdirSync, existsSync } = require("fs");
+  const { directoryStructure } = require("./config.js");
+  // const pathToApplication = `./Lab/Applications/${applicationName}`;
+  const pathToApplication = `./procedures/infrastructure/templates/stack`;
+
+  function traverseAndBuildFolderStructure(pathToFolder, structure) {
+    if (structure.length) {
+      for (let folder of structure) {
+        let targetFolder = `${pathToFolder}/${folder.name}`;
+        let folderExists = existsSync(targetFolder);
+        if (!folderExists) {
+          console.log(
+            `        - Creating ${
+              targetFolder.split("./Lab/Applications/Test")[1]
+            }`
+          );
+          mkdirSync(targetFolder);
+        }
+        if (folder.subfolders.length) {
+          let currentFolder = targetFolder;
+          traverseAndBuildFolderStructure(currentFolder, folder.subfolders);
+        }
+      }
+    }
+  }
+
+  traverseAndBuildFolderStructure(pathToApplication, directoryStructure);
+  console.log(`      -> Folders generated!`);
+};
+module.exports.generateStack = applicationName => {
+  console.log(`    > Generating stack file infrastructure.`);
+  const { readFileSync, writeFileSync } = require("fs");
+  const { directoryStructure } = require("./config.js");
+  const pathToApplication = `./Lab/Applications/${applicationName}`;
+
+  function traverseAndGenerateStackFiles(pathToFolder, structure) {
+    if (structure.length) {
+      for (let folder of structure) {
+        let targetFolder = `${pathToFolder}/${folder.name}`;
+        let contents = "// new file";
+
+        writeFileSync(`${targetFolder}/index.js`, contents);
+
+        if (folder.subfolders.length) {
+          let currentFolder = targetFolder;
+          traverseAndGenerateStackFiles(currentFolder, folder.subfolders);
+        }
+      }
+    }
+  }
+
+  traverseAndGenerateStackFiles(pathToApplication, directoryStructure);
+
+  console.log(`      -> Infrastructure generated!`);
 };
