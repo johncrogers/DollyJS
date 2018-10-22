@@ -2,38 +2,46 @@ PROCEDURE:
   Infrastructure:
     ✔ Create new application folder. @done(18-10-20 12:48)
     ✔ Write templates: @done(18-10-20 12:48)
+      ✘ import custom config @cancelled(18-10-20 18:39)
       ✔ .gitignore @done(18-10-20 12:48)
       ✔ package.json @done(18-10-20 12:48)
       ✔ webpack.config.js @done(18-10-20 12:48)
-    ☐ Install dependencies.
+    ✔ Install dependencies. @done(18-10-20 18:39)
+      ✔ procedure @done(18-10-20 18:39)
+      ✘ import from config @cancelled(18-10-20 18:39)
+    ✔ Directories: @done(18-10-21 14:34)
+      ✘ import from config @cancelled(18-10-20 18:39)
+      ✔ procedure @done(18-10-21 14:34)
+        ✔ db: @done(18-10-20 18:42)
+          ✔ models @done(18-10-21 14:19)
+          ✔ tables @done(18-10-21 14:19)
+            ✔ conn @done(18-10-21 14:19)
+            ✔ api @done(18-10-21 14:19)
+            ✔ schemas @done(18-10-21 14:19)
+          ✔ policy @done(18-10-21 14:19)
+        ✔ app: @done(18-10-20 18:42)
+          ✔ dist @done(18-10-20 18:42)
+            ✔ scripts @done(18-10-20 18:44)
+            ✔ styles @done(18-10-20 18:44)
+          ✔ src @done(18-10-20 18:42)
+            ✔ views @done(18-10-20 18:47)
+              ✔ admin @done(18-10-20 18:47)
+              ✔ public @done(18-10-20 18:48)
+            ✔ resources @done(18-10-20 18:47)
+            ✔ copy @done(18-10-20 18:47)
+        ✔ server: @done(18-10-20 18:42)
+          ✔ controllers @done(18-10-20 18:49)
+            ✔ auth @done(18-10-20 18:49)
+            ✔ routers @done(18-10-20 18:49)
+              ✔ endpoints @done(18-10-20 18:49)
+    ☐ Files:
+      ✘ import from config @cancelled(18-10-20 18:39)
+      ✘ curious discovery @cancelled(18-10-21 20:04)
       ☐ procedure
-      ☐ import from config
-    ☐ Directories:
-      ☐ import from config
-      ☐ procedure
-        ☐ db:
-          ☐ models
-          ☐ tables
-            ☐ conn
-            ☐ api
-            ☐ schemas
-          ☐ policy
-        ☐ app:
-          ☐ dist
-            ☐ scripts
-            ☐ styles
-          ☐ src
-            ☐ views
-              ☐ admin
-              ☐ public
-            ☐ resources
-            ☐ copy
-        ☐ server:
-          ☐ controllers
-            ☐ auth
-            ☐ routers
-              ☐ endpoints
-
+        ☐ traverse
+        ☐ read template
+        ☐ write new file
+        ☐ add all needed files
 WRITE FILES
   db
     conn.js

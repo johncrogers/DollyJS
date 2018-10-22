@@ -12,5 +12,6 @@ console.log(openingMessage);
 const { applicationName } = require(resolveConfigurationPath());
 infrastructure.generateAppDirectory(applicationName);
 infrastructure.writeConfigFiles(applicationName);
-infrastructure.installDependencies(applicationName);
+// infrastructure.installDependencies(applicationName);
 infrastructure.generateDirectories(applicationName);
+infrastructure.generateStack(applicationName);
