@@ -7,6 +7,7 @@ module.exports.generateAppDirectory = applicationName => {
     mkdirSync(applicationFolder);
   }
 };
+
 module.exports.writeConfigFiles = applicationName => {
   console.log(`    > Writing application configuration files.`);
   const { writeFileSync } = require("fs");
@@ -21,6 +22,7 @@ module.exports.writeConfigFiles = applicationName => {
   }
   console.log(`      -> Files written!`);
 };
+
 module.exports.installDependencies = applicationName => {
   console.log(`    > Installing application dependencies.`);
   const { execSync } = require("child_process");
@@ -32,78 +34,51 @@ module.exports.installDependencies = applicationName => {
     execSync(`npm install ${dependency}`, { cwd: applicationFolder });
   }
 };
-module.exports.generateDirectories = applicationName => {
-  console.log(`    > Generating directory structure.`);
-  const { mkdirSync, existsSync } = require("fs");
-  const { directoryStructure } = require("./config.js");
-  const pathToApplication = `./Lab/Applications/${applicationName}`;
 
-  function traverseAndBuildFolderStructure(pathToFolder, structure) {
-    if (structure.length) {
-      for (let folder of structure) {
-        let targetFolder = `${pathToFolder}/${folder.name}`;
-        let folderExists = existsSync(targetFolder);
-        if (!folderExists) {
-          console.log(
-            `        - Creating ${targetFolder.split(pathToApplication)[1]}`
-          );
-          mkdirSync(targetFolder);
-        }
-        if (folder.subfolders.length) {
-          let currentFolder = targetFolder;
-          traverseAndBuildFolderStructure(currentFolder, folder.subfolders);
-        }
-      }
-    }
-  }
-
-  traverseAndBuildFolderStructure(pathToApplication, directoryStructure);
-  console.log(`      -> Folders generated!`);
-};
-module.exports.generateStack = applicationName => {
-  console.log(`    > Generating stack file infrastructure.`);
-  const { readFileSync, writeFileSync } = require("fs");
-  const { directoryStructure } = require("./config.js");
-  const pathToApplication = `./Lab/Applications/${applicationName}`;
+module.exports.generateStackInfrastructure = applicationName => {
+  console.log(`    > Generating stack infrastructure.`);
+  const {
+    existsSync,
+    readdirSync,
+    readFileSync,
+    mkdirSync,
+    writeFileSync
+  } = require("fs");
   const pathToTemplates = `./procedures/infrastructure/templates/stack`;
+  const pathToApplication = `./Lab/Applications/${applicationName}`;
+  function hasContents(path) {
+    return readdirSync(path).length ? true : false;
+  }
 
-  function traverseAndGenerateStackFiles(
-    pathToFolder,
-    pathToTemplate,
-    structure
-  ) {
-    if (structure.length) {
-      for (let folder of structure) {
-        let targetFolder = `${pathToFolder}/${folder.name}`;
-        let templateFolder = `${pathToTemplate}/${folder.name}`;
+  function traverseTemplates(targetPath) {
+    let currentLocationInTemplates = targetPath.split(pathToTemplates)[1];
+    let newDirectoryPath = `${pathToApplication}${currentLocationInTemplates}`;
+    console.log(`       - Creating directory ${newDirectoryPath}`);
+    if (!existsSync(newDirectoryPath)) {
+      mkdirSync(newDirectoryPath);
+    }
+    if (hasContents(targetPath)) {
+      let directoryContents = readdirSync(targetPath);
 
-        if (folder.file) {
-          let targetTemplate = `${templateFolder}/${folder.file}`;
-          let contents = readFileSync(`${targetTemplate}`, "utf8");
-          console.log(
-            `        - Creating ${targetTemplate.split(pathToTemplates)[1]}`
-          );
-          writeFileSync(`${targetFolder}/${folder.file}`, contents);
+      for (let item of directoryContents) {
+        let isFolder = !item.includes(".");
+        let isFile = item.includes(".");
+
+        if (isFolder) {
+          let folderToCheck = `${targetPath}/${item}`;
+          traverseTemplates(folderToCheck);
         }
 
-        if (folder.subfolders.length) {
-          let currentFolder = targetFolder;
-          let currentTemplateFolder = templateFolder;
-          traverseAndGenerateStackFiles(
-            currentFolder,
-            currentTemplateFolder,
-            folder.subfolders
-          );
+        if (isFile) {
+          let pathToWrite = `${pathToApplication}${currentLocationInTemplates}/${item}`;
+          let fileContents = readFileSync(`${targetPath}/${item}`);
+          console.log(`       - Creating file ${pathToWrite}`);
+          writeFileSync(pathToWrite, fileContents);
         }
       }
     }
   }
 
-  traverseAndGenerateStackFiles(
-    pathToApplication,
-    pathToTemplates,
-    directoryStructure
-  );
-
-  console.log(`      -> Infrastructure generated!`);
+  traverseTemplates(pathToTemplates);
+  console.log(`      -> Folders generated!`);
 };

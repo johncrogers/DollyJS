@@ -34,22 +34,11 @@ PROCEDURE:
             ✔ auth @done(18-10-20 18:49)
             ✔ routers @done(18-10-20 18:49)
               ✔ endpoints @done(18-10-20 18:49)
-    ☐ Files:
+    ✔ Files: @done(18-10-22 21:42)
       ✘ import from config @cancelled(18-10-20 18:39)
-      ✘ curious discovery @cancelled(18-10-21 20:04)
-      ☐ procedure
-        ☐ traverse
-        ☐ read template
-        ☐ write new file
-        ☐ add all needed files
-WRITE FILES
-  db
-    conn.js
-  app
-    src
-    dist
-  server
-  Stack
-    Model
-    Controller
-    View
+      ✔ curious discovery @done(18-10-22 21:42)
+      ✔ procedure @done(18-10-22 21:42)
+        ✔ traverse @done(18-10-22 21:42)
+        ✔ read template @done(18-10-22 21:42)
+        ✔ write new file @done(18-10-22 21:42)
+        ✔ add all needed files @done(18-10-22 21:42)
