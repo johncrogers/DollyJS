@@ -1,7 +1,7 @@
 module.exports.fileName = "webpack.config.js";
 module.exports.contents =
   'var path = require("path");' +
-  'var SRC_DIR = path.join(__dirname, "app/src/components");' +
+  'var SRC_DIR = path.join(__dirname, "app/src/views/");' +
   'var DIST_DIR = path.join(__dirname, "app/dist/scripts");' +
   "\n" +
   "module.exports = {" +

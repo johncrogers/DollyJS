@@ -82,3 +82,13 @@ module.exports.generateStackInfrastructure = applicationName => {
   traverseTemplates(pathToTemplates);
   console.log(`      -> Folders generated!`);
 };
+module.exports.generateFirstBundle = applicationName => {
+  console.log(`    > Generating first bundle.`);
+  const { execSync } = require("child_process");
+  let applicationFolder = `./Lab/Applications/${applicationName}`;
+
+  execSync(
+    `webpack ${applicationFolder}/app/src/views/Index.jsx ${applicationFolder}/app/dist/scripts/bundle.js`,
+    { cwd: applicationFolder }
+  );
+};

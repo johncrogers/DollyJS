@@ -14,3 +14,4 @@ infrastructure.generateAppDirectory(applicationName);
 infrastructure.writeConfigFiles(applicationName);
 infrastructure.installDependencies(applicationName);
 infrastructure.generateStackInfrastructure(applicationName);
+infrastructure.generateFirstBundle(applicationName);
