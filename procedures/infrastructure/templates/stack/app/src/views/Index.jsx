@@ -9,21 +9,21 @@ class Index extends React.Component {
     console.log(`Render Index`, this.props);
     return (
       <div>
-        Index{" "}
+        Index
         <button
           onClick={() => {
             console.log(this.state);
           }}
         >
-          Index State{" "}
-        </button>{" "}
+          Index State
+        </button>
         <button
           onClick={() => {
             console.log(this.props);
           }}
         >
-          Index Props{" "}
-        </button>{" "}
+          Index Props
+        </button>
       </div>
     );
   }
